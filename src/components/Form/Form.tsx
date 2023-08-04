@@ -1,25 +1,23 @@
 import classNames  from 'classnames';
 import { categories } from "../../types/Category";
-import { useEffect, useRef, useState } from 'react';
+import { useCallback, useEffect, useRef, useState } from 'react';
 import { Note } from '../../types/Note';
+import { useAppDispatch, useAppSelector } from '../../redux/hooks';
 import { months } from '../../variables/months';
+import { actions } from '../../redux/reducer';
 
-type Props = {
-  onSubmit: (note: Note) => void;
-  onReset?: () => void;
-  note?: Note;
-};
-
-export const Form: React.FC<Props> = ({
-  onSubmit,
-  onReset = () => {},
-  note,
-}) => {
-  const [noteName, setNoteName] = useState(note?.name || '');
+export const Form: React.FC = () => {
+  const dispatch = useAppDispatch();
+  const selectedNote = useAppSelector(state => state.selectedNote);
+  const addNote = (note: Note) => dispatch(actions.addNote(note));
+  const updateNote = (note: Note) => dispatch(actions.updateNote(note));
+  const onReset = () => dispatch(actions.setSelectedNote(null));
+  
+  const [noteName, setNoteName] = useState(selectedNote?.name || '');
   const [hasNameError, setHasNameError] = useState(false);
-  const [noteCategory, setNoteCategory] = useState(note?.category || '');
+  const [noteCategory, setNoteCategory] = useState(selectedNote?.category || '');
   const [hasCategoryError, setHasCategoryError] = useState(false);
-  const [noteContent, setNoteContent] = useState(note?.content || '');
+  const [noteContent, setNoteContent] = useState(selectedNote?.content || '');
   const [hasContentError, setHasContentError] = useState(false);
   const inputRef = useRef<HTMLInputElement>(null);
   
@@ -43,13 +41,23 @@ export const Form: React.FC<Props> = ({
     const month = months[dateObject.getMonth()];
     const day = dateObject.getDate();
 
-    onSubmit({
-      id: note?.id || getNewNoteId(),
-      name: noteName,
-      created: `${month} ${day}, ${year}`,
-      category: noteCategory,
-      content: noteContent,
-    });
+    if (selectedNote) {
+      updateNote({
+        id: selectedNote?.id,
+        name: noteName,
+        created: `${month} ${day}, ${year}`,
+        category: noteCategory,
+        content: noteContent,
+      });
+    } else {
+      addNote({
+        id: getNewNoteId(),
+        name: noteName,
+        created: `${month} ${day}, ${year}`,
+        category: noteCategory,
+        content: noteContent,
+      });
+    }
 
     reset();
   };
@@ -84,7 +92,7 @@ export const Form: React.FC<Props> = ({
     if (inputRef.current) {
       inputRef.current.focus();
     }
-  }, [note?.id]);
+  }, [selectedNote?.id]);
 
   return (
     <form
