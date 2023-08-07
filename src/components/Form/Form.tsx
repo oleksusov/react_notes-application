@@ -5,12 +5,13 @@ import { Note } from '../../types/Note';
 import { useAppDispatch, useAppSelector } from '../../redux/hooks';
 import { months } from '../../variables/months';
 import { actions } from '../../redux/reducer';
+import { getNewNoteId } from '../../helpers/getNewNoteId';
 
 export const Form: React.FC = () => {
   const dispatch = useAppDispatch();
   const selectedNote = useAppSelector(state => state.selectedNote);
-  const addNote = (note: Note) => dispatch(actions.addNote(note));
-  const updateNote = (note: Note) => dispatch(actions.updateNote(note));
+  const addNote = useCallback((note: Note) => dispatch(actions.addNote(note)), [dispatch]);
+  const updateNote = useCallback((note: Note) => dispatch(actions.updateNote(note)), [dispatch]);
   const onReset = () => dispatch(actions.setSelectedNote(null));
   
   const [noteName, setNoteName] = useState(selectedNote?.name || '');
@@ -20,10 +21,6 @@ export const Form: React.FC = () => {
   const [noteContent, setNoteContent] = useState(selectedNote?.content || '');
   const [hasContentError, setHasContentError] = useState(false);
   const inputRef = useRef<HTMLInputElement>(null);
-  
-  function getNewNoteId() {
-    return Math.random().toFixed(12).slice(2);
-  }
 
   const handleSubmit = (event: React.FormEvent) => {
     event.preventDefault();

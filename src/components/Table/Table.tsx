@@ -1,6 +1,5 @@
 import classNames from "classnames";
 import { notesTableHeaders, summaryTableHeaders } from "../../variables/headers";
-import { Info } from "../../types/Info";
 import { Note } from "../../types/Note";
 import { TableHead } from "../TableHead";
 import { useAppDispatch, useAppSelector } from "../../redux/hooks";
