@@ -95,16 +95,22 @@ export const Form: React.FC = () => {
     <form
       onSubmit={handleSubmit}
       onReset={reset}
+      className="w-full max-w-md mx-auto"
     >
-      <div className="field">
-        <label className="label" htmlFor="field-name">Name</label>
-        <div className="control">
+      <div className="mb-6">
+        <label
+          className="block text-sm font-medium leading-6 text-gray-900"
+          htmlFor="field-name"
+        >
+          Name
+        </label>
+        <div className="relative">
           <input
             ref={inputRef}
             className={classNames(
-              'input',
+              'shadow border rounded w-full py-2 px-2 text-gray-700 leading-tight focus:outline-none focus:shadow-outline focus:border-indigo-600',
               {
-                'is-danger': hasNameError,
+                'border-red-500': hasNameError,
               },
             )}
             value={noteName}
@@ -113,69 +119,73 @@ export const Form: React.FC = () => {
             id="field-name"
             placeholder="Note name"
           />
-        </div>
 
-        {hasNameError && (
-          <p className="help is-danger">Please enter some name</p>
-        )}
+          {hasNameError && (
+            <p className="absolute text-red-500 text-xs mt-1">Please enter some name</p>
+          )}
+        </div>
       </div>
 
-      <div className="field">
-        <label className="label" htmlFor="field-category">Category</label>
-        <div className="control">
-          <div className={classNames(
-              'select',
+      <div className="mb-6">
+        <label
+          className="block text-sm font-medium leading-6 text-gray-900"
+          htmlFor="field-category"
+        >
+          Category
+        </label>
+        <div className="relative">
+          <select
+            id="field-category"
+            className={classNames(
+              'shadow border rounded w-full py-2 px-2 text-gray-700 leading-tight focus:outline-none focus:shadow-outline focus:border-indigo-600',
               {
-                'is-danger': hasCategoryError,
+                'border-red-500': hasCategoryError,
               },
-            )}>
-            <select
-              id="field-category"
-              value={noteCategory}
-              onChange={handleSelectChange}
-            >
-              <option value="">Choose a category</option>
-              {categories.map((category) => (
-                <option key={category} value={category}>{category}</option>
-              ))}
-            </select>
-          </div>
-        </div>
+            )}
+            value={noteCategory}
+            onChange={handleSelectChange}
+          >
+            <option value="">Choose a category</option>
+            {categories.map((category) => (
+              <option key={category} value={category}>{category}</option>
+            ))}
+          </select>
 
-        {hasCategoryError && (
-          <p className="help is-danger">Please choose some category</p>
-        )}
+          {hasCategoryError && (
+            <p className="absolute text-red-500 text-xs mt-1">Please choose some category</p>
+          )}
+        </div>
       </div>
 
-      <div className="field">
-        <label className="label" htmlFor="field-content">Note content</label>
+      <div className="mb-6">
+        <label
+          className="block text-sm font-medium leading-6 text-gray-900"
+          htmlFor="field-content"
+        >
+          Note content
+        </label>
         <textarea
           className={classNames(
-            'textarea',
+            'shadow border h-32 rounded w-full py-2 px-2 text-gray-700 leading-tight focus:outline-none focus:shadow-outline focus:border-indigo-600',
             {
-              'is-danger': hasContentError,
+              'border-red-500': hasContentError,
             },
           )}
+          style={{ resize: 'none' }}
           id="field-content"
           value={noteContent}
           onChange={handleTexrareaChange}
           placeholder="Content"
         ></textarea>
-
         {hasContentError && (
-          <p className="help is-danger">Please enter some content</p>
+          <p className="absolute text-red-500 text-xs mt-1">Please enter some content</p>
         )}
       </div>
-
-      <div className="field">
-        <div className="field is-grouped is-grouped-centered">
-          <div className="control">
-            <button type="submit" className="button is-primary">Submit</button>
-          </div>
-
-          <div className="control">
-            <button type="reset" className="button is-light">Cancel</button>
-          </div>
+      
+      <div className="mb-6">
+        <div className="flex justify-center space-x-4">
+          <button type="submit" className="bg-blue-500 text-white py-2 px-4 rounded hover:bg-blue-600">Submit</button>
+          <button type="reset" className="bg-gray-200 text-gray-800 py-2 px-4 rounded hover:bg-gray-300">Cancel</button>
         </div>
       </div>
     </form>

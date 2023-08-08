@@ -6,13 +6,14 @@ export const TableHead: React.FC<Props> = ({
   headers,
 }) => {
   return (
-    <thead>
+    <thead className="bg-gray-100">
       <tr>
       {headers.map((header) => (
-        <th key={header}>
-          <span className="is-flex is-flex-wrap-nowrap">
-            {header}
-          </span>
+        <th
+          key={header}
+          className="py-2 px-4 font-medium text-left border"
+        >
+          {header}
         </th>
       ))}
       </tr>
