@@ -1,26 +1,32 @@
 import React from 'react';
-import logo from './logo.svg';
 import './App.css';
+import { Table } from './components/Table';
+import { Form } from './components/Form';
+import { useAppSelector } from './redux/hooks';
 
-function App() {
+export const App: React.FC = () => {
+  const selectedNoteId = useAppSelector((state: { selectedNote: any; }) => state.selectedNote)?.id;
   return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.tsx</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
+    <div className="max-w-screen-lg mx-auto">
+      <div className="md:flex space-x-4">
+        <div className="md:w-5/12 mb-8 md:mb-0 p-4">
+          <Form key={selectedNoteId} />
+        </div>
+
+        <div className="md:w-7/12 space-y-4">
+          <div className="mt-8">
+            <Table
+              tableName={"List of notes"}
+            />
+          </div>
+
+          <div className="mt-8">
+            <Table
+              tableName={"Summary"}
+            />
+          </div>
+        </div>              
+      </div>
     </div>
   );
 }
-
-export default App;
